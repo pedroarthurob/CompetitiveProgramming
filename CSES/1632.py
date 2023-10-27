@@ -1,30 +1,38 @@
-def assign_movies_to_members(k, movies):
-    movies.sort(key=lambda x: x[1])  # Ordena os filmes por tempo de término
-    members = [0] * k  # Inicializa a coleção com k zeros
-    assigned = 0  # Inicializa o número de filmes atribuídos
+def ceil(array, x):
+    return recursive_ceil(array, 0, len(x)-1, x)
 
-    for movie in movies:
-        start_time, end_time = movie
-        member_index = None
+def recursive_ceil(array, i, f, x):
+    if (not i < 0 and not f >= len(array)):
+        mid = (i+f)//2
+        if array[mid] == x:
+            return mid
+        elif array[mid] == x:
+            
 
-        # Encontra um membro disponível para assistir o filme
-        for i in range(k):
-            if members[i] <= start_time:
-                if member_index is None or members[i] > members[member_index]:
-                    member_index = i
+    else:
+        return False
 
-        # Atribui o membro ao filme se encontrado
-        if member_index is not None:
-            members[member_index] = end_time
-            assigned += 1
-
-    return assigned
 
 n, k = map(int, input().split())
-movies = []
-for i in range(n):
-    inicio, fim = map(int, input().split())
-    movies.append((inicio, fim))
+members = [0 for i in range(k)]
+movie_ends = []
+answer = 0
 
-assigned_movies = assign_movies_to_members(k, movies)
-print( assigned_movies)
+for i in range(n):
+    starts, ends = map(int, input().split())
+    movie_ends.append((ends, starts))
+
+    movie_ends.sort()
+
+for ends, starts in movie_ends:
+    member_index = 0
+    while member_index < k and members[member_index] > starts:
+        member_index += 1
+
+    if member_index < k:
+        members[member_index] = ends
+        answer += 1
+    
+
+print(answer)
+
